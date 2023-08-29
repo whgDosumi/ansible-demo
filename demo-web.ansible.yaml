@@ -1,17 +1,29 @@
---- # playbook to configure server as a webserver for demo app. 
-- name: 
+--- 
+- name: Configure server as a webserver for demo app.
   hosts: all
   become: yes
 
   tasks: 
-  - name: Install Applications
-    dnf: 
-      name = ' {{ item }} ' 
-      state = latest
+    - name: Install Applications
+      dnf: 
+        name: '{{ item }}' 
+        state: latest
       with_items:
-        httpd
-        git
-  - name: Checkout Code
-    git: 
-      
-    
+        - httpd
+        - git
+        - python-firewall
+        - firewalld
+    - name: Checkout Web Code
+      git: 
+        dest: "/var/www/html/"
+        repo: "https://github.com/whgDosumi/sample_web"
+    - name: Enable Apache
+      systemd:
+        enabled: true
+        name: "httpd"
+        state: started
+    - name: Punch Firewall Holes
+      firewalld:
+        permanent: true
+        service: http
+        state: enabled
