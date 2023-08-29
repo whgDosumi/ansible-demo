@@ -1,0 +1,17 @@
+--- # playbook to configure server as a webserver for demo app. 
+- name: 
+  hosts: all
+  become: yes
+
+  tasks: 
+  - name: Install Applications
+    dnf: 
+      name = ' {{ item }} ' 
+      state = latest
+      with_items:
+        httpd
+        git
+  - name: Checkout Code
+    git: 
+      
+    

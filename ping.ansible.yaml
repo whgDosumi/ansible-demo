@@ -1,0 +1,9 @@
+--- # playbook to ping all hosts
+- name: ping
+  hosts: all
+  become: yes
+
+  tasks: 
+  - name: ping
+    ping:
+    
